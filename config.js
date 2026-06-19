@@ -21,6 +21,6 @@ window.APP_CLOUDINARY = {
 
 /* ─── 3. APP IDENTITY (পরিবর্তন করতে হবে না) ────────────────────── */
 window.APP_IDENTITY = {
-    theme_key: "csm_v2_theme",
-    idb_name:  "csm-db-v2"
+    theme_key: "csm_v2_tme",
+    idb_name:  "csm--v2"
 };
