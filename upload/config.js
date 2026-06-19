@@ -6,12 +6,12 @@
 
 /* ─── 1. FIREBASE CONFIG ─────────────────────────────────────────── */
 window.APP_FIREBASE_CONFIG = {
-    apiKey:            "AIzaSyAdNtnBJGIOp6thBRl4iRMzJZkCSMFlXB8",
-    authDomain:        "huhu-7c721.firebaseapp.com",
-    projectId:         "huhu-7c721",
-    storageBucket:     "huhu-7c721.firebasestorage.app",
-    messagingSenderId: "670067666994",
-    appId:             "1:670067666994:web:f3ba6d0b5b06c6b2f80c2b"
+    apiKey:            "AIzaSyDakP1ItJu4JR8fQbs75TqZGnlklIQw73s",
+    authDomain:        "alif-9e150.firebaseapp.com",
+    projectId:         "alif-9e150",
+    storageBucket:     "alif-9e150.firebasestorage.app",
+    messagingSenderId: "978824359182",
+    appId:             "1:978824359182:web:3548796cddae526bb8fb5f"
 };
 
 /* ─── 2. CLOUDINARY CONFIG ───────────────────────────────────────── */
