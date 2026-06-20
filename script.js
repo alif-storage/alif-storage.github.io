@@ -21,7 +21,7 @@
  */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, deleteDoc, updateDoc, query } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /* ─── Firebase config (config.js থেকে নেওয়া হচ্ছে) ────────────── */
@@ -316,6 +316,22 @@ document.getElementById('doLogin').onclick = async () => {
         btn.disabled = false;
     }
 };
+
+document.getElementById('forgotPassword').onclick = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    if (!email) {
+        showToast('Enter your email to reset password', 'warning');
+        return;
+    }
+    try {
+        await sendPasswordResetEmail(auth, email);
+        showToast('Password reset email sent', 'success');
+    } catch (e) {
+        console.error('Password reset failed', e);
+        showToast('Could not send reset email', 'error');
+    }
+};
+
 document.getElementById('loginPass').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('doLogin').click();
 });
