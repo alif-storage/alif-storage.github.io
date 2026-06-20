@@ -122,6 +122,59 @@ async function idbClear(store) {
     });
 }
 
+/* ─── Setup Login Handlers ──────────────────────────────────── */
+function setupLoginHandlers() {
+    // Login button handler
+    const doLoginBtn = document.getElementById('doLogin');
+    if (doLoginBtn) {
+        doLoginBtn.onclick = async () => {
+            const btn   = document.getElementById('doLogin');
+            const idle  = btn.querySelector('.btn-idle');
+            const loading = btn.querySelector('.btn-loading');
+            idle.classList.add('hidden');
+            loading.classList.remove('hidden');
+            btn.disabled = true;
+            try {
+                await signInWithEmailAndPassword(auth,
+                    document.getElementById('loginEmail').value,
+                    document.getElementById('loginPass').value);
+            } catch (e) {
+                showToast('Authentication failed', 'error');
+                idle.classList.remove('hidden');
+                loading.classList.add('hidden');
+                btn.disabled = false;
+            }
+        };
+    }
+    
+    // Forgot password button handler
+    const forgotBtn = document.getElementById('forgotPassword');
+    if (forgotBtn) {
+        forgotBtn.onclick = async () => {
+            const email = document.getElementById('loginEmail').value.trim();
+            if (!email) {
+                showToast('Enter your email to reset password', 'warning');
+                return;
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showToast('Password reset email sent to ' + email, 'success');
+            } catch (e) {
+                console.error('Password reset failed', e);
+                showToast('Error: ' + (e.message || 'Could not send reset email'), 'error');
+            }
+        };
+    }
+    
+    // Enter key listener for password field
+    const passField = document.getElementById('loginPass');
+    if (passField) {
+        passField.addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('doLogin').click();
+        });
+    }
+}
+
 /* ─── Init ──────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
     await ensureIDB();
@@ -133,6 +186,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tc = document.createElement('div');
     tc.id = 'toastContainer';
     document.body.appendChild(tc);
+    
+    // Setup event handlers for login buttons
+    setupLoginHandlers();
 });
 
 /* ─── AOS — Scroll reveal ───────────────────────────────────── */
@@ -296,45 +352,6 @@ function showMain() {
         });
     }, 100);
 }
-
-/* ─── Login ─────────────────────────────────────────────────── */
-document.getElementById('doLogin').onclick = async () => {
-    const btn   = document.getElementById('doLogin');
-    const idle  = btn.querySelector('.btn-idle');
-    const loading = btn.querySelector('.btn-loading');
-    idle.classList.add('hidden');
-    loading.classList.remove('hidden');
-    btn.disabled = true;
-    try {
-        await signInWithEmailAndPassword(auth,
-            document.getElementById('loginEmail').value,
-            document.getElementById('loginPass').value);
-    } catch (e) {
-        showToast('Authentication failed', 'error');
-        idle.classList.remove('hidden');
-        loading.classList.add('hidden');
-        btn.disabled = false;
-    }
-};
-
-document.getElementById('forgotPassword').onclick = async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    if (!email) {
-        showToast('Enter your email to reset password', 'warning');
-        return;
-    }
-    try {
-        await sendPasswordResetEmail(auth, email);
-        showToast('Password reset email sent', 'success');
-    } catch (e) {
-        console.error('Password reset failed', e);
-        showToast('Could not send reset email', 'error');
-    }
-};
-
-document.getElementById('loginPass').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('doLogin').click();
-});
 
 /* ─── Passcode ──────────────────────────────────────────────── */
 function showPasscodeScreen(cb) {
